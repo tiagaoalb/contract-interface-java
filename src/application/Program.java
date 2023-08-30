@@ -1,6 +1,9 @@
 package application;
 
 import model.entities.Contract;
+import model.entities.Installment;
+import model.services.ContractService;
+import model.services.PaypalService;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -19,7 +22,7 @@ public class Program {
         System.out.println("Entre os dados do contrato:");
         System.out.print("Numero: ");
         int number = sc.nextInt();
-        System.out.println("Data (dd/MM/yyyy): ");
+        System.out.print("Data (dd/MM/yyyy): ");
         sc.nextLine();
         LocalDate date = LocalDate.parse(sc.next(), fmt);
         System.out.print("Valor do contrato: ");
@@ -29,6 +32,15 @@ public class Program {
 
         System.out.print("Digite a quantidade de parcelas: ");
         int numberOfInstallments = sc.nextInt();
+
+        ContractService contractService = new ContractService(new PaypalService());
+
+        contractService.processContract(obj, numberOfInstallments);
+
+        System.out.println("Parcelas:");
+        for (Installment installment : obj.getInstallments()) {
+            System.out.println(installment);
+        }
 
         sc.close();
     }
